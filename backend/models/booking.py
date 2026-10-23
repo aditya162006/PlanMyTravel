@@ -55,21 +55,25 @@ class Expense(db.Model):
     category = db.Column(db.String(50), nullable=True)
     spent_at = db.Column(db.String(50), nullable=True)
     notes = db.Column(db.Text, nullable=True)
+    paid_with_wallet = db.Column(db.Integer, nullable=False, default=0)
     created_at = db.Column(db.String(50), nullable=False, default=lambda: datetime.now(timezone.utc).isoformat())
     updated_at = db.Column(db.String(50), nullable=False, default=lambda: datetime.now(timezone.utc).isoformat(), onupdate=lambda: datetime.now(timezone.utc).isoformat())
 
     def to_dict(self):
+        paid = bool(self.paid_with_wallet) or ('[Paid via Wallet]' in (self.notes or ''))
         return {
             "id": self.id,
             "user_id": self.user_id,
             "trip_id": self.trip_id,
             "booking_id": self.booking_id,
             "title": self.title,
-            "amount": self.amount,
+            "amount": round(self.amount, 2),
             "currency": self.currency,
-            "category": self.category,
-            "spent_at": self.spent_at,
+            "category": self.category or "General",
+            "spent_at": self.spent_at or self.created_at,
             "notes": self.notes,
+            "paid_with_wallet": paid,
+            "created_at": self.created_at,
         }
 
 

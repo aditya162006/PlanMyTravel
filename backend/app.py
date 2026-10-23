@@ -57,6 +57,7 @@ def create_app(test_config=None) -> Flask:
     from backend.routes.admin_routes import admin_bp
     from backend.routes.guide_routes import guide_bp
     from backend.routes.review_routes import review_bp
+    from backend.routes.expense_routes import expense_bp
 
     app.register_blueprint(health_bp)
     app.register_blueprint(auth_bp)
@@ -70,6 +71,7 @@ def create_app(test_config=None) -> Flask:
     app.register_blueprint(admin_bp)
     app.register_blueprint(guide_bp)
     app.register_blueprint(review_bp)
+    app.register_blueprint(expense_bp)
 
     # Images serving
     images_dir = Path(__file__).resolve().parent.parent / "frontend" / "public" / "images"
