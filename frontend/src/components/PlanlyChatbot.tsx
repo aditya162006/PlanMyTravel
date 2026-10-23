@@ -75,7 +75,7 @@ export const PlanlyChatbot: React.FC<PlanlyChatbotProps> = ({ embedded = false }
 
       const res = await api.chatAssistant(textToSend, history);
       let replyText = res?.reply || "I'm here to help! Could you please clarify your request?";
-      
+
       // Clean up JSON strings if returned
       if (typeof replyText === 'string' && replyText.trim().startsWith('{') && replyText.includes('"response"')) {
         try {
@@ -272,7 +272,7 @@ export const PlanlyChatbot: React.FC<PlanlyChatbotProps> = ({ embedded = false }
       {/* Expanded Floating Chat Panel */}
       {isOpen && (
         <div className="w-88 sm:w-96 h-[540px] max-h-[85vh] bg-white rounded-3xl border border-charcoal-200 shadow-float overflow-hidden flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-200">
-          
+
           {/* Header */}
           <div className="px-5 py-4 bg-forest-900 text-ivory-50 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
@@ -410,3 +410,4 @@ export const PlanlyChatbot: React.FC<PlanlyChatbotProps> = ({ embedded = false }
     </div>
   );
 };
+

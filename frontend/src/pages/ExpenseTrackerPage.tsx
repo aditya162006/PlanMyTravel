@@ -164,7 +164,7 @@ export const ExpenseTrackerPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      
+
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -258,7 +258,7 @@ export const ExpenseTrackerPage: React.FC = () => {
 
       {/* Key Financial Metrics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        
+
         {/* Total Spent */}
         <div className="p-6 rounded-3xl bg-white border border-charcoal-100 shadow-soft-sm space-y-1">
           <div className="flex items-center justify-between text-xs text-charcoal-400 font-bold uppercase tracking-wider">
@@ -344,7 +344,7 @@ export const ExpenseTrackerPage: React.FC = () => {
 
       {/* Category Breakdown & Expense History Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* Left Column: Category Breakdown */}
         <div className="bg-white p-6 rounded-3xl border border-charcoal-100 shadow-soft-sm space-y-4">
           <h3 className="font-serif text-lg font-medium text-charcoal-900 border-b border-charcoal-100 pb-3">
@@ -484,7 +484,7 @@ export const ExpenseTrackerPage: React.FC = () => {
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-charcoal-900/60 backdrop-blur-sm animate-in fade-in duration-150">
           <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-float border border-charcoal-100 p-6 sm:p-8 space-y-6">
-            
+
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-6 right-6 p-2 rounded-full text-charcoal-400 hover:text-charcoal-800 hover:bg-ivory-100 transition-colors"
@@ -619,3 +619,4 @@ export const ExpenseTrackerPage: React.FC = () => {
     </div>
   );
 };
+
