@@ -329,12 +329,13 @@ def test_review_authorization_protection(app):
 def test_expense_tracker_and_wallet_settlement(app):
     """Test journey expense logging, wallet deduction, and overexpense calculations."""
     auth_client = app.test_client()
-    user, csrf = get_authenticated_client(auth_client)
+    _, csrf = get_authenticated_client(auth_client)
     headers = {"X-CSRF-Token": csrf}
 
     # Credit user wallet with 50,000 for testing
+    user_email = auth_client.get("/api/auth/me").get_json()["user"]["email"]
     with app.app_context():
-        u = User.query.filter_by(email=user["email"]).first()
+        u = User.query.filter_by(email=user_email).first()
         from backend.services.wallet_service import WalletService
         WalletService.credit(u.id, 50000.0, f"test_credit_{random.randint(100, 99999)}")
 
