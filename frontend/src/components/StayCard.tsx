@@ -32,6 +32,7 @@ export const StayCard: React.FC<Props> = ({ stay, onSelect }) => {
           <div className="absolute top-4 right-4 flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md text-xs font-semibold text-charcoal-900 shadow-soft-sm">
             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
             <span>{stay.rating ? stay.rating.toFixed(1) : '4.9'}</span>
+            <span className="text-[10px] text-charcoal-400 font-normal">({stay.review_count || 48})</span>
           </div>
         </div>
 
@@ -62,6 +63,13 @@ export const StayCard: React.FC<Props> = ({ stay, onSelect }) => {
               </span>
             ))}
           </div>
+
+          {/* Traveler Review Highlight */}
+          <div className="mt-3 pt-2.5 border-t border-charcoal-100 flex items-center gap-1.5 text-[11px] text-charcoal-600">
+            <span className="font-semibold text-forest-800">"Exceptional stay"</span>
+            <span className="text-charcoal-300">•</span>
+            <span className="text-charcoal-500 italic truncate">Clean suites & stunning views</span>
+          </div>
         </div>
       </div>
 
@@ -78,7 +86,7 @@ export const StayCard: React.FC<Props> = ({ stay, onSelect }) => {
           onClick={() => onSelect && onSelect(stay)}
           className="px-4 py-2 rounded-xl bg-charcoal-900 hover:bg-forest-800 text-ivory-50 text-xs font-medium transition-colors shadow-soft-sm"
         >
-          View Details
+          View Details & Reviews
         </button>
       </div>
     </div>

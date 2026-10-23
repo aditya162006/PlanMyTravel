@@ -422,19 +422,19 @@ Output JSON format:
         """Answer traveler questions about the PlanMyTravel website and services."""
         msg_clean = (message or "").strip()
         if not msg_clean:
-            return "Hello! I am your PlanMyTravel AI concierge. How can I assist you with your journeys, stays, guides, or wallet today?"
+            return "Hello! I am Planly, your PlanMyTravel AI concierge. How can I assist you with your journeys, stays, guides, or wallet today?"
 
         system_instruction = (
-            "You are the official AI Assistant for PlanMyTravel (inspired by Airbnb luxury aesthetics). "
+            "You are Planly, the official AI Concierge for PlanMyTravel. Always identify yourself as Planly. "
             "Help travelers with website questions, destinations, AI itineraries, curated stays, personal local guides, "
             "Trip Wallet payments, and journey expense tracking. "
             "Key features:\n"
-            "- Concierge AI Planner: Click 'AI Concierge' to customize origin, dates, budget in INR (₹), and pace for full day-by-day plans.\n"
-            "- Curated Stays: Verified luxury hotels/ryokans with interactive Google Maps & date-specific weather forecasts.\n"
+            "- Concierge AI Planner: Click 'AI Concierge' to customize origin, dates, budget in INR (₹), and pace for bespoke itineraries.\n"
+            "- Curated Stays: Handpicked boutique hotels & ryokans with interactive Google Maps & date-specific live weather forecasts.\n"
             "- Personal Local Guides: Professional verified guides in each region. Users can apply at '/become-a-guide' with photo and government ID.\n"
-            "- Trip Wallet: Digital ledger in INR for instant 1-click booking and expense settlement.\n"
-            "- Journey Expense Tracker: Track total trip spending, receive over-expense alerts, and pay directly through wallet.\n"
-            "- Verified Reviews: Authenticity-guaranteed reviews from travelers who completed their trips.\n"
+            "- Trip Wallet: Digital ledger in INR for instant 1-click booking and expense settlement with zero minimum balance limits.\n"
+            "- Journey Expense Tracker: Track total trip spending, receive over-expense alerts, and pay directly through the wallet.\n"
+            "- Verified Reviews: Authentic reviews from travelers who completed their trips.\n"
             "Keep answers concise, friendly, and formatted in clean markdown. Always mention prices in ₹ (INR)."
         )
 
@@ -451,7 +451,15 @@ Output JSON format:
         try:
             response = self._call_gemini_with_fallback(prompt, system_instruction)
             if response and len(response.strip()) > 10:
-                return response.strip()
+                resp_text = response.strip()
+                try:
+                    import json
+                    parsed = json.loads(resp_text)
+                    if isinstance(parsed, dict) and "response" in parsed:
+                        return str(parsed["response"])
+                except Exception:
+                    pass
+                return resp_text
         except Exception as e:
             logger.warning("Gemini chat call failed: %s. Using rule-based fallback.", e)
 

@@ -178,6 +178,8 @@ export const api = {
     apiRequest('/api/ai/replace-activity', { method: 'POST', body: JSON.stringify(payload) }),
   chat: (payload: { message: string; history?: Array<{ role: string; content: string }> }) =>
     apiRequest<{ success: boolean; reply: string }>('/api/ai/chat', { method: 'POST', body: JSON.stringify(payload) }),
+  chatAssistant: (message: string, history?: Array<{ role: string; content: string }>) =>
+    apiRequest<{ success: boolean; reply: string }>('/api/ai/chat', { method: 'POST', body: JSON.stringify({ message, history }) }),
 
   // Expense Tracker
   getExpenses: (params: { trip_id?: string } = {}) => {

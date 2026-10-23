@@ -15,6 +15,8 @@ import { WalletPage } from './pages/WalletPage';
 import { BookingsPage } from './pages/BookingsPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { GuideRegistrationPage } from './pages/GuideRegistrationPage';
+import { ExpenseTrackerPage } from './pages/ExpenseTrackerPage';
+import { PlanlyChatbot } from './components/PlanlyChatbot';
 
 export const App: React.FC = () => {
   return (
@@ -30,6 +32,7 @@ export const App: React.FC = () => {
               <Route path="/stays" element={<StaysPage />} />
               <Route path="/concierge" element={<ConciergePlannerPage />} />
               <Route path="/trips" element={<MyTripsPage />} />
+              <Route path="/expenses" element={<ExpenseTrackerPage />} />
               <Route path="/wallet" element={<WalletPage />} />
               <Route path="/bookings" element={<BookingsPage />} />
               <Route path="/admin" element={<AdminDashboardPage />} />
@@ -38,6 +41,7 @@ export const App: React.FC = () => {
           </main>
           <Footer />
           <AuthModal />
+          <PlanlyChatbot />
         </div>
       </Router>
     </AuthProvider>

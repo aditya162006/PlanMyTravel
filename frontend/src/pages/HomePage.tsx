@@ -5,6 +5,7 @@ import { Destination, Stay } from '../types';
 import { api } from '../api/client';
 import { DestinationCard } from '../components/DestinationCard';
 import { StayCard } from '../components/StayCard';
+import { PlanlyChatbot } from '../components/PlanlyChatbot';
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -321,6 +322,42 @@ export const HomePage: React.FC = () => {
               onSelect={() => navigate(`/stays`)}
             />
           ))}
+        </div>
+      </section>
+
+      {/* 5. Meet Planly AI Concierge Section on Home Screen */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-gradient-to-br from-forest-900 to-forest-950 text-white rounded-3xl p-8 sm:p-12 shadow-soft-lg">
+          <div className="lg:col-span-5 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest-800 text-sage-300 text-xs font-semibold border border-sage-400/20">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Meet Planly</span>
+            </div>
+            <h2 className="font-serif text-3xl sm:text-4xl font-medium text-white leading-tight">
+              Your 24/7 Intelligent AI Concierge
+            </h2>
+            <p className="text-xs sm:text-sm text-ivory-300 font-light leading-relaxed">
+              Have questions about how PlanMyTravel works? Planly is ready to assist with custom itineraries, local certified guides, curated stays with weather forecasts, our zero-minimum-balance Trip Wallet, and journey expense tracking.
+            </p>
+            <div className="space-y-2.5 pt-2 text-xs text-sage-200">
+              <div className="flex items-center gap-2.5">
+                <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <span>Instant guidance on planning and travel budgets</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Compass className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <span>Zero minimum balance required in Trip Wallet</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Bed className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <span>Curated boutique stays with authentic verified reviews</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="lg:col-span-7">
+            <PlanlyChatbot embedded={true} />
+          </div>
         </div>
       </section>
 

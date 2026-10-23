@@ -222,15 +222,15 @@ export const DestinationDetailPage: React.FC = () => {
             <div className="space-y-2 border-t border-charcoal-100 pt-4 text-xs">
               <div className="flex justify-between text-charcoal-600">
                 <span>Indicative Flights (Return)</span>
-                <span className="font-medium text-charcoal-900">~₹40,000</span>
+                <span className="font-medium text-charcoal-900">~₹{Math.round((destination.estimated_cost_min || 50000) * 0.4).toLocaleString('en-IN')}</span>
               </div>
               <div className="flex justify-between text-charcoal-600">
                 <span>Stays (Boutique)</span>
-                <span className="font-medium text-charcoal-900">~₹35,000</span>
+                <span className="font-medium text-charcoal-900">~₹{Math.round((destination.estimated_cost_min || 50000) * 0.35).toLocaleString('en-IN')}</span>
               </div>
               <div className="flex justify-between text-charcoal-600">
                 <span>Activities & Dining</span>
-                <span className="font-medium text-charcoal-900">~₹20,000</span>
+                <span className="font-medium text-charcoal-900">~₹{Math.round((destination.estimated_cost_min || 50000) * 0.25).toLocaleString('en-IN')}</span>
               </div>
             </div>
 

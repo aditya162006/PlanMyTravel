@@ -33,6 +33,48 @@
   background: rgba(123, 121, 116, 0.6);
 }
 
+/* Dynamic Interactive Buttons:
+   At rest, buttons sit compactly (minimized state).
+   When cursor hovers over them, they dynamically expand, elevate, and highlight with full visibility.
+   When the cursor is removed, they smoothly transition back to their minimized state.
+   All buttons maintain full clickability and tactile responsive feedback.
+*/
+button, .btn-dynamic, a[role="button"] {
+  cursor: pointer;
+  position: relative;
+  transform: scale(0.97);
+  opacity: 0.95;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.2s ease,
+              background-color 0.15s ease,
+              border-color 0.15s ease;
+  will-change: transform, box-shadow;
+  pointer-events: auto;
+}
+
+button:hover:not(:disabled),
+.btn-dynamic:hover:not(:disabled),
+a[role="button"]:hover {
+  transform: scale(1.035) translateY(-1.5px);
+  opacity: 1;
+  box-shadow: 0 8px 20px -3px rgba(26, 48, 35, 0.16), 0 3px 8px -1px rgba(26, 48, 35, 0.08);
+}
+
+button:active:not(:disabled),
+.btn-dynamic:active:not(:disabled),
+a[role="button"]:active {
+  transform: scale(0.95) translateY(0.5px);
+}
+
+button:disabled,
+.btn-dynamic:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 /* Glass & editorial blur accents */
 .editorial-glass {
   background: rgba(255, 255, 255, 0.85);

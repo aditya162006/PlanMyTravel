@@ -248,9 +248,9 @@ export const WalletPage: React.FC = () => {
                 </label>
                 <input
                   type="number"
-                  min="100"
+                  min="1"
                   max="200000"
-                  step="100"
+                  step="1"
                   required
                   value={amount}
                   onChange={(e) => setAmount(Number(e.target.value))}

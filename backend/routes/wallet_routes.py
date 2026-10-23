@@ -40,8 +40,8 @@ def create_wallet_order():
     except (ValueError, TypeError):
         return jsonify({"error": "Invalid amount"}), 400
 
-    if amount_rupees < 100:
-        return jsonify({"error": "Minimum top-up amount is ₹100"}), 400
+    if amount_rupees < 1:
+        return jsonify({"error": "Minimum top-up amount is ₹1"}), 400
     if amount_rupees > 200000:
         return jsonify({"error": "Maximum single top-up amount is ₹2,00,000"}), 400
 

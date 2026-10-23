@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Compass, Sparkles, Bed, MapPin, Wallet as WalletIcon, Menu, X, ShieldAlert, LogOut, Users } from 'lucide-react';
+import { Compass, Sparkles, Bed, MapPin, Wallet as WalletIcon, Menu, X, ShieldAlert, LogOut, Users, PieChart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const Navbar: React.FC = () => {
@@ -74,6 +74,16 @@ export const Navbar: React.FC = () => {
               }`}
             >
               My Trips
+            </Link>
+            <Link
+              to="/expenses"
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                isActive('/expenses')
+                  ? 'bg-charcoal-900 text-ivory-50'
+                  : 'text-charcoal-700 hover:text-charcoal-900 hover:bg-ivory-200/60'
+              }`}
+            >
+              Expenses
             </Link>
           </nav>
 
@@ -155,6 +165,14 @@ export const Navbar: React.FC = () => {
                         >
                           <MapPin className="w-4 h-4 text-charcoal-400" />
                           <span>My Saved Trips</span>
+                        </Link>
+                        <Link
+                          to="/expenses"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2 px-4 py-2.5 text-sm text-charcoal-700 hover:bg-ivory-100 transition-colors"
+                        >
+                          <PieChart className="w-4 h-4 text-charcoal-400" />
+                          <span>Journey Expenses</span>
                         </Link>
                         <Link
                           to="/wallet"
@@ -297,6 +315,15 @@ export const Navbar: React.FC = () => {
               }`}
             >
               My Saved Trips
+            </Link>
+            <Link
+              to="/expenses"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`px-4 py-3 rounded-xl text-base font-medium ${
+                isActive('/expenses') ? 'bg-charcoal-900 text-white' : 'text-charcoal-800 hover:bg-ivory-200'
+              }`}
+            >
+              Journey Expenses
             </Link>
             <Link
               to="/wallet"

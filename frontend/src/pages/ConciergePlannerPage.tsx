@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
-import { Sparkles, MapPin, Calendar, Users, DollarSign, Compass, ArrowRight, RotateCw, Save, CheckCircle2, Plane, Car, Bed, ShieldAlert, AlertCircle, RefreshCw } from 'lucide-react';
+import { Sparkles, MapPin, Calendar, Users, DollarSign, Compass, ArrowRight, RotateCw, Save, CheckCircle2, Plane, Car, Bed, ShieldAlert, AlertCircle, RefreshCw, Star, PieChart } from 'lucide-react';
 import { Itinerary, ItineraryDay, ItineraryActivity } from '../types';
 import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
@@ -486,14 +486,28 @@ export const ConciergePlannerPage: React.FC = () => {
                   <div
                     key={idx}
                     onClick={() => navigate(`/stays?destination=${encodeURIComponent(destination)}`)}
-                    className="p-4 rounded-2xl bg-ivory-50 hover:bg-ivory-100/80 transition-colors cursor-pointer text-xs space-y-2 border border-transparent hover:border-charcoal-200"
+                    className="p-4 rounded-2xl bg-ivory-50 hover:bg-ivory-100/80 transition-colors cursor-pointer text-xs space-y-2.5 border border-transparent hover:border-charcoal-200"
                   >
                     <div className="flex justify-between font-semibold text-charcoal-900 text-sm">
                       <span>{acc.name}</span>
                       <span className="text-forest-800">₹{acc.nightly_rate?.toLocaleString('en-IN') || '12,000'} / nt</span>
                     </div>
                     <p className="text-charcoal-600">{acc.category} in {acc.city || acc.neighborhood || 'Prime Center'}</p>
-                    <p className="text-[11px] text-charcoal-400 italic">{acc.booking_advice || 'Free cancellation recommended. Click to view on map & reserve.'}</p>
+                    
+                    {/* Guest Reviews Snippet */}
+                    <div className="pt-2 border-t border-charcoal-200/60 flex items-center justify-between text-[11px]">
+                      <div className="flex items-center gap-1.5 text-charcoal-700">
+                        <div className="flex items-center text-amber-500">
+                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                          <span className="font-bold ml-1">{acc.rating ? Number(acc.rating).toFixed(1) : '4.9'}</span>
+                        </div>
+                        <span className="text-charcoal-300">•</span>
+                        <span className="text-charcoal-600 italic line-clamp-1">
+                          "{acc.review_snippet || 'Exquisite hospitality, serene atmosphere and attentive concierge.'}"
+                        </span>
+                      </div>
+                      <span className="text-forest-800 font-semibold flex-shrink-0 ml-2">Read reviews →</span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -639,10 +653,17 @@ export const ConciergePlannerPage: React.FC = () => {
                     Save Itinerary
                   </button>
                   <Link
-                    to="/wallet"
-                    className="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-medium text-xs border border-white/20 transition-all"
+                    to="/expenses"
+                    className="px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-medium text-xs border border-white/20 transition-all flex items-center gap-1.5"
                   >
-                    Checkout with Trip Wallet
+                    <PieChart className="w-3.5 h-3.5 text-sage-300" />
+                    <span>Track Expenses</span>
+                  </Link>
+                  <Link
+                    to="/wallet"
+                    className="px-5 py-3 rounded-full bg-forest-800 hover:bg-forest-700 text-white font-medium text-xs border border-sage-500/30 transition-all"
+                  >
+                    Checkout with Wallet
                   </Link>
                 </div>
               </div>
