@@ -74,6 +74,16 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/expenses" className="text-charcoal-600 hover:text-charcoal-900 transition-colors">
+                  Journey Expense Tracker
+                </Link>
+              </li>
+              <li>
+                <Link to="/become-a-guide" className="text-charcoal-600 hover:text-charcoal-900 transition-colors">
+                  Become a Local Guide
+                </Link>
+              </li>
+              <li>
                 <Link to="/trips" className="text-charcoal-600 hover:text-charcoal-900 transition-colors">
                   Saved Itineraries
                 </Link>

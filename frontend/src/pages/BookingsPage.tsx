@@ -260,11 +260,18 @@ export const BookingsPage: React.FC = () => {
                         </span>
                         <button
                           onClick={() => setReviewBooking(booking)}
-                          className="px-4 py-1.5 rounded-full bg-forest-800 hover:bg-forest-900 text-white text-xs font-semibold flex items-center gap-1.5 shadow-soft"
+                          className="px-4 py-1.5 rounded-full bg-forest-800 hover:bg-forest-900 text-white text-xs font-semibold flex items-center gap-1.5 shadow-soft transition-all hover:scale-105 active:scale-95"
                         >
                           <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300" />
                           <span>Write Review</span>
                         </button>
+                        <Link
+                          to="/expenses"
+                          className="px-3.5 py-1.5 rounded-full bg-white hover:bg-[#F2F2F2] border border-[#DDDDDD] text-[#222222] text-xs font-semibold flex items-center gap-1 shadow-soft-sm transition-all hover:scale-105 active:scale-95"
+                          title="View and track journey expenses"
+                        >
+                          <span>Expenses →</span>
+                        </Link>
                       </div>
                     )}
                   </div>
