@@ -176,6 +176,21 @@ export const api = {
     apiRequest('/api/ai/regenerate-day', { method: 'POST', body: JSON.stringify(payload) }),
   replaceActivity: (payload: { slot: string; current_activity: any; destination: string; notes?: string }) =>
     apiRequest('/api/ai/replace-activity', { method: 'POST', body: JSON.stringify(payload) }),
+  chat: (payload: { message: string; history?: Array<{ role: string; content: string }> }) =>
+    apiRequest<{ success: boolean; reply: string }>('/api/ai/chat', { method: 'POST', body: JSON.stringify(payload) }),
+
+  // Expense Tracker
+  getExpenses: (params: { trip_id?: string } = {}) => {
+    const query = new URLSearchParams();
+    if (params.trip_id) query.append('trip_id', params.trip_id);
+    return apiRequest(`/api/expenses?${query.toString()}`);
+  },
+  addExpense: (payload: { title: string; amount: number; category?: string; trip_id?: string; notes?: string; spent_at?: string; pay_with_wallet?: boolean }) =>
+    apiRequest('/api/expenses', { method: 'POST', body: JSON.stringify(payload) }),
+  payExpenseWithWallet: (id: number) =>
+    apiRequest(`/api/expenses/${id}/pay`, { method: 'POST' }),
+  deleteExpense: (id: number) =>
+    apiRequest(`/api/expenses/${id}`, { method: 'DELETE' }),
 
   // Saved Trips
   getTrips: () => apiRequest('/api/trips'),

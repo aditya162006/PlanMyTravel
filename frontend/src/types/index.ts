@@ -303,3 +303,37 @@ export interface AdminAuditLog {
   created_at: string;
 }
 
+export interface Expense {
+  id: number;
+  user_id: number;
+  trip_id?: string;
+  booking_id?: number;
+  title: string;
+  amount: number;
+  currency: string;
+  category: string;
+  spent_at: string;
+  notes?: string;
+  paid_with_wallet: boolean;
+  created_at: string;
+}
+
+export interface ExpenseSummary {
+  expenses: Expense[];
+  total_spent: number;
+  budget: number;
+  remaining_budget: number;
+  spent_percentage: number;
+  is_over_budget: boolean;
+  over_budget_by: number;
+  alert?: {
+    type: 'danger' | 'warning';
+    title: string;
+    message: string;
+    over_by: number;
+  } | null;
+  categories: Record<string, number>;
+  wallet_balance: number;
+}
+
+

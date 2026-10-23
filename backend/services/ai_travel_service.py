@@ -418,3 +418,91 @@ Output JSON format:
             ]
         }
 
+    def chat_assistant(self, message: str, history: Optional[List[Dict[str, str]]] = None) -> str:
+        """Answer traveler questions about the PlanMyTravel website and services."""
+        msg_clean = (message or "").strip()
+        if not msg_clean:
+            return "Hello! I am your PlanMyTravel AI concierge. How can I assist you with your journeys, stays, guides, or wallet today?"
+
+        system_instruction = (
+            "You are the official AI Assistant for PlanMyTravel (inspired by Airbnb luxury aesthetics). "
+            "Help travelers with website questions, destinations, AI itineraries, curated stays, personal local guides, "
+            "Trip Wallet payments, and journey expense tracking. "
+            "Key features:\n"
+            "- Concierge AI Planner: Click 'AI Concierge' to customize origin, dates, budget in INR (₹), and pace for full day-by-day plans.\n"
+            "- Curated Stays: Verified luxury hotels/ryokans with interactive Google Maps & date-specific weather forecasts.\n"
+            "- Personal Local Guides: Professional verified guides in each region. Users can apply at '/become-a-guide' with photo and government ID.\n"
+            "- Trip Wallet: Digital ledger in INR for instant 1-click booking and expense settlement.\n"
+            "- Journey Expense Tracker: Track total trip spending, receive over-expense alerts, and pay directly through wallet.\n"
+            "- Verified Reviews: Authenticity-guaranteed reviews from travelers who completed their trips.\n"
+            "Keep answers concise, friendly, and formatted in clean markdown. Always mention prices in ₹ (INR)."
+        )
+
+        # Contextual prompt
+        history_context = ""
+        if history:
+            for item in history[-4:]:
+                role = item.get("role", "user")
+                content = item.get("content", "")
+                history_context += f"{role.capitalize()}: {content}\n"
+
+        prompt = f"{history_context}User: {msg_clean}\nAssistant:"
+
+        try:
+            response = self._call_gemini_with_fallback(prompt, system_instruction)
+            if response and len(response.strip()) > 10:
+                return response.strip()
+        except Exception as e:
+            logger.warning("Gemini chat call failed: %s. Using rule-based fallback.", e)
+
+        # High-quality rule-based fallback responses
+        lower_q = msg_clean.lower()
+        if any(w in lower_q for w in ["plan", "itinerary", "concierge", "ai trip", "generate"]):
+            return (
+                "**How to Plan with AI Concierge:**\n"
+                "1. Click **AI Concierge** in the top navigation.\n"
+                "2. Choose your destination, travel duration, number of guests, and approximate budget in ₹ (INR).\n"
+                "3. Our AI crafts a bespoke day-by-day itinerary with matched boutique stays, curated activities, and transit advice in seconds!"
+            )
+        elif any(w in lower_q for w in ["wallet", "balance", "money", "pay", "topup", "recharge"]):
+            return (
+                "**PlanMyTravel Trip Wallet:**\n"
+                "- Your real-time wallet balance is always visible in the navigation bar.\n"
+                "- Top up securely using UPI or cards on the **Trip Wallet** page.\n"
+                "- Use your wallet balance for 1-click bookings and settling on-trip expenses with zero gateway fees."
+            )
+        elif any(w in lower_q for w in ["expense", "tracker", "budget", "overexpense", "alert"]):
+            return (
+                "**Journey Expense Tracker:**\n"
+                "- Track your overall expenses throughout your trip by category (stays, flights, food, activities).\n"
+                "- Set your trip budget and get instant **Overexpense Alerts** if your spending exceeds the target.\n"
+                "- Settle individual expenses directly with a single click using your Trip Wallet!"
+            )
+        elif any(w in lower_q for w in ["guide", "local guide", "become a guide", "tour guide"]):
+            return (
+                "**Personal Local Guides:**\n"
+                "- Browse verified personal guides across top destinations (Singapore, Kyoto, Amalfi, Alps, Udaipur, Thailand).\n"
+                "- Want to guide travelers? Visit **Become a Guide** (`/become-a-guide`), upload your portrait and government ID for staff verification, and start hosting!"
+            )
+        elif any(w in lower_q for w in ["stay", "hotel", "weather", "map"]):
+            return (
+                "**Curated Stays & Live Weather:**\n"
+                "- Explore our handpicked boutique stays with interactive Google Maps.\n"
+                "- Enter your check-in dates to see live weather forecasts and packing tips for your stay's specific location!"
+            )
+        elif any(w in lower_q for w in ["review", "fake review", "feedback", "rating"]):
+            return (
+                "**Verified Reviews:**\n"
+                "- All published reviews feature genuine traveler insights on stay hospitality, quietness, and breakfast.\n"
+                "- Only verified travelers with completed bookings are authorized to submit new reviews."
+            )
+        else:
+            return (
+                "Welcome to **PlanMyTravel**! I can assist you with:\n"
+                "- ✈️ **AI Concierge**: Generating personalized itineraries\n"
+                "- 🏨 **Stays**: Boutique hotel recommendations, maps, and weather\n"
+                "- 🧭 **Personal Guides**: Connecting with local experts or registering as a guide\n"
+                "- 💳 **Trip Wallet & Expense Tracker**: Tracking your budget and 1-click payments\n\n"
+                "Feel free to ask me anything about your upcoming journey!"
+            )
+

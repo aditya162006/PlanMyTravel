@@ -155,3 +155,21 @@ def replace_activity():
     )
     return jsonify({"success": True, "activity": new_activity})
 
+
+@ai_bp.route("/chat", methods=["POST"])
+def ai_chat():
+    """Interactive AI Travel Concierge chatbot answering questions about the website."""
+    data = request.get_json() or {}
+    message = data.get("message", "").strip()
+    history = data.get("history", [])
+
+    if not message:
+        return jsonify({"error": "Message cannot be empty"}), 400
+
+    reply = ai_service.chat_assistant(message=message, history=history)
+    return jsonify({
+        "success": True,
+        "reply": reply,
+    })
+
+
