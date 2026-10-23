@@ -75,6 +75,16 @@ export const Navbar: React.FC = () => {
             >
               My Trips
             </Link>
+            <Link
+              to="/expenses"
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                isActive('/expenses')
+                  ? 'bg-charcoal-900 text-ivory-50'
+                  : 'text-charcoal-700 hover:text-charcoal-900 hover:bg-ivory-200/60'
+              }`}
+            >
+              Expenses
+            </Link>
           </nav>
 
           {/* Right Controls: Admin Pill, Wallet & Account */}
@@ -306,6 +316,15 @@ export const Navbar: React.FC = () => {
               }`}
             >
               Trip Wallet
+            </Link>
+            <Link
+              to="/expenses"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`px-4 py-3 rounded-xl text-base font-medium ${
+                isActive('/expenses') ? 'bg-charcoal-900 text-white' : 'text-charcoal-800 hover:bg-ivory-200'
+              }`}
+            >
+              Expense Tracker
             </Link>
             <Link
               to="/bookings"

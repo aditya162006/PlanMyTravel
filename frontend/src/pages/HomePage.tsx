@@ -5,6 +5,7 @@ import { Destination, Stay } from '../types';
 import { api } from '../api/client';
 import { DestinationCard } from '../components/DestinationCard';
 import { StayCard } from '../components/StayCard';
+import { AIChatbot } from '../components/AIChatbot';
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -287,6 +288,63 @@ export const HomePage: React.FC = () => {
             <p className="text-[11px] text-charcoal-400 italic text-center pt-1">
               "Never fabricates unconfirmed hotel inventory or arbitrary prices."
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. AI Concierge & Chatbot Assistant Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row items-center gap-10 bg-gradient-to-br from-[#FFF0F2] via-white to-[#F7F7F7] p-8 sm:p-12 rounded-[40px] border border-[#DDDDDD] shadow-soft">
+          <div className="flex-1 space-y-4">
+            <span className="px-3.5 py-1 rounded-full bg-white border border-[#FFC5CC] text-[#FF385C] text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-soft-sm">
+              <Sparkles className="w-3.5 h-3.5 text-[#FF385C]" />
+              <span>Interactive AI Assistant</span>
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-medium text-[#222222]">
+              Have questions about PlanMyTravel? <br />
+              <span className="italic font-light text-[#FF385C]">Ask our live AI Concierge.</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-[#717171] leading-relaxed max-w-lg">
+              Get instant answers about how to plan trips, how our Trip Wallet and zero-fee ledger work, how to register as a personal local guide, or how to track your journey expenses with live overexpense alerts.
+            </p>
+
+            <div className="pt-2 flex flex-wrap gap-2.5 text-xs text-[#717171]">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#DDDDDD] shadow-soft-sm">
+                <span className="w-2 h-2 rounded-full bg-[#008A05]"></span>
+                <span>AI Itineraries</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#DDDDDD] shadow-soft-sm">
+                <span className="w-2 h-2 rounded-full bg-[#008A05]"></span>
+                <span>Trip Wallet & Payments</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#DDDDDD] shadow-soft-sm">
+                <span className="w-2 h-2 rounded-full bg-[#008A05]"></span>
+                <span>Local Guides & Stays</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#DDDDDD] shadow-soft-sm">
+                <span className="w-2 h-2 rounded-full bg-[#008A05]"></span>
+                <span>Expense Tracker & Alerts</span>
+              </div>
+            </div>
+
+            <div className="pt-4 flex items-center gap-4">
+              <Link
+                to="/concierge"
+                className="px-6 py-3 rounded-full bg-[#FF385C] hover:bg-[#E00B41] text-white text-xs font-semibold shadow-coral transition-all hover:scale-105 active:scale-95 cursor-pointer"
+              >
+                Launch AI Trip Planner →
+              </Link>
+              <Link
+                to="/expenses"
+                className="px-6 py-3 rounded-full bg-white hover:bg-[#F2F2F2] border border-[#DDDDDD] text-[#222222] text-xs font-semibold transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-soft-sm"
+              >
+                View Expense Tracker
+              </Link>
+            </div>
+          </div>
+
+          <div className="w-full lg:w-[480px]">
+            <AIChatbot embedded={true} />
           </div>
         </div>
       </section>
