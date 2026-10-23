@@ -127,6 +127,17 @@ class WalletService:
         }
 
     @classmethod
+    def credit(cls, user_id: int, amount_rupees: float, reference: str, description: str = "Wallet Top-up", currency: str = "INR", **kwargs) -> Dict[str, Any]:
+        """Convenience alias for credit_wallet."""
+        return cls.credit_wallet(user_id=user_id, amount_rupees=amount_rupees, reference=reference, description=description, currency=currency)
+
+    @classmethod
+    def debit(cls, user_id: int, amount_rupees: float, description: str, reference: Optional[str] = None, idempotency_key: Optional[str] = None, **kwargs) -> Dict[str, Any]:
+        """Convenience alias for debit_wallet supporting reference or idempotency_key."""
+        ref = reference or idempotency_key
+        return cls.debit_wallet(user_id=user_id, amount_rupees=amount_rupees, description=description, reference=ref, **kwargs)
+
+    @classmethod
     def get_wallet_summary(cls, user_id: int) -> Dict[str, Any]:
         """Retrieve balance and full transaction history."""
         wallet = cls.get_or_create_wallet(user_id)
