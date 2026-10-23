@@ -6,11 +6,18 @@
   html {
     scroll-behavior: smooth;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    color: #222222;
+    background-color: #FFFFFF;
   }
   
+  body {
+    background-color: #FFFFFF;
+    color: #222222;
+  }
+
   ::selection {
-    background-color: #E5EDE7;
-    color: #112118;
+    background-color: #FFE2E6;
+    color: #FF385C;
   }
 }
 
@@ -25,17 +32,33 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(163, 162, 158, 0.4);
+  background: rgba(113, 113, 113, 0.3);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(123, 121, 116, 0.6);
+  background: rgba(113, 113, 113, 0.6);
 }
 
-/* Glass & editorial blur accents */
+/* Dynamic Interactive Buttons:
+   Hovering over buttons elevates/scales them up; removing cursor smoothly minimizes them.
+*/
+button, .btn-dynamic {
+  cursor: pointer;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, background-color 0.15s ease, opacity 0.15s ease;
+}
+
+button:hover:not(:disabled), .btn-dynamic:hover:not(:disabled) {
+  transform: translateY(-1.5px) scale(1.025);
+}
+
+button:active:not(:disabled), .btn-dynamic:active:not(:disabled) {
+  transform: translateY(0.5px) scale(0.975);
+}
+
+/* Editorial & Airbnb-style glass effects */
 .editorial-glass {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -45,6 +68,6 @@
 }
 
 .editorial-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px -4px rgba(34, 34, 34, 0.1);
 }
-

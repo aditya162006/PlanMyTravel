@@ -249,8 +249,8 @@ export const ConciergePlannerPage: React.FC = () => {
                 <span className="w-4 h-4 absolute left-3.5 top-2.5 text-charcoal-600 font-bold text-sm select-none">₹</span>
                 <input
                   type="number"
-                  step="5000"
-                  min="20000"
+                  step="1000"
+                  min="0"
                   value={budget}
                   onChange={(e) => setBudget(Number(e.target.value))}
                   className="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border border-charcoal-200 focus:border-forest-800 focus:ring-1 focus:ring-forest-800 outline-none transition-all"
