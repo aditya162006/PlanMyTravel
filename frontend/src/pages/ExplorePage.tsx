@@ -1,14 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Search, SlidersHorizontal, RotateCcw, Compass, MapPin } from 'lucide-react';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
+import { Search, SlidersHorizontal, RotateCcw, Compass, MapPin, Calendar, Sparkles, Bed, Users, ArrowUpRight, Clock, Star, ShieldCheck } from 'lucide-react';
 import { Destination } from '../types';
 import { api } from '../api/client';
 import { DestinationCard } from '../components/DestinationCard';
 
 export const ExplorePage: React.FC = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Mock Itineraries Blueprint Data
+  const mockItineraries = [
+    {
+      id: 'mock_itin_santorini',
+      title: '4-Day Aegean Caldera & Sunset Sail',
+      destination: 'Santorini & Cyclades, Greece',
+      category: 'Coastal Sanctuaries',
+      duration: '4 Days / 3 Nights',
+      budget: 85000,
+      image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=80',
+      stayName: 'Canaves Oia Suites (Caldera View)',
+      guideName: 'Eleni Vassiliou (Certified Cycladic Host)',
+      rating: 4.98,
+      reviewsCount: 182,
+      highlights: ['Private Catamaran Sunset Sail', 'Oia Blue Dome Promenade', 'Assyrtiko Wine Tasting'],
+    },
+    {
+      id: 'mock_itin_bali',
+      title: '5-Day Sacred Jungle & Ocean Cliff Sanctuary',
+      destination: 'Bali & Nusa Islands, Indonesia',
+      category: 'Nature Retreats',
+      duration: '5 Days / 4 Nights',
+      budget: 45000,
+      image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
+      stayName: 'Viceroy Bali Valley of the Kings',
+      guideName: 'Wayan Sudarsana (Certified Cultural Guide)',
+      rating: 4.96,
+      reviewsCount: 210,
+      highlights: ['Tegallalang Terraces Trek', 'Tirta Empul Sacred Blessing', 'Nusa Penida T-Rex Cliff Excursion'],
+    },
+    {
+      id: 'mock_itin_iceland',
+      title: '4-Day Geothermal Wonder & Northern Lights',
+      destination: 'Reykjavik & Golden Circle, Iceland',
+      category: 'Affordable Adventures',
+      duration: '4 Days / 3 Nights',
+      budget: 95000,
+      image: 'https://images.unsplash.com/photo-1504893524553-b855bce32c67?auto=format&fit=crop&w=800&q=80',
+      stayName: 'The Retreat at Blue Lagoon',
+      guideName: 'Astrid Sigurdardottir (Arctic Glaciologist)',
+      rating: 4.99,
+      reviewsCount: 164,
+      highlights: ['Blue Lagoon Mineral Soak', 'Gullfoss Glacial Waterfall', 'Aurora Borealis Wilderness Hunt'],
+    },
+  ];
 
   // Filters state
   const [query, setQuery] = useState(searchParams.get('q') || '');
