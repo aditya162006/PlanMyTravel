@@ -378,3 +378,4 @@ export const AIChatbot: React.FC<AIChatbotProps> = ({ embedded = false }) => {
     </div>
   );
 };
+

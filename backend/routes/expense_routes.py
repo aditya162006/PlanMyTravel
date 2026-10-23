@@ -196,3 +196,4 @@ def delete_expense(expense_id: int):
     db.session.delete(expense)
     db.session.commit()
     return jsonify({"success": True, "message": "Expense removed successfully"})
+
