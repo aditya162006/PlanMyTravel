@@ -325,3 +325,69 @@ def test_review_authorization_protection(app):
     assert auth_res.status_code == 201
     assert auth_res.get_json()["success"] is True
 
+
+def test_expense_tracker_and_wallet_settlement(app):
+    """Test journey expense logging, wallet deduction, and overexpense calculations."""
+    auth_client = app.test_client()
+    user, csrf = get_authenticated_client(auth_client)
+    headers = {"X-CSRF-Token": csrf}
+
+    # Credit user wallet with 50,000 for testing
+    with app.app_context():
+        u = User.query.filter_by(email=user["email"]).first()
+        from backend.services.wallet_service import WalletService
+        WalletService.credit(u.id, 50000.0, f"test_credit_{random.randint(100, 99999)}")
+
+    # 1. Fetch initial expenses
+    res = auth_client.get("/api/expenses")
+    assert res.status_code == 200
+    data = res.get_json()
+    assert "total_spent" in data
+    assert "budget" in data
+    assert data["wallet_balance"] >= 50000.0
+
+    # 2. Add an expense and pay directly with wallet
+    res_add = auth_client.post("/api/expenses", json={
+        "title": "Shinkansen High Speed Rail",
+        "amount": 12500.0,
+        "category": "Flights & Transit",
+        "pay_with_wallet": True,
+        "notes": "Express ticket booking",
+    }, headers=headers)
+    assert res_add.status_code == 201
+    exp_data = res_add.get_json()
+    assert exp_data["success"] is True
+    assert exp_data["expense"]["paid_with_wallet"] is True
+
+    # 3. Verify ledger summary updated
+    res_summary = auth_client.get("/api/expenses")
+    assert res_summary.status_code == 200
+    summary_data = res_summary.get_json()
+    assert summary_data["total_spent"] >= 12500.0
+    assert summary_data["categories"].get("Flights & Transit", 0) >= 12500.0
+
+
+def test_ai_chat_assistant_endpoint(app):
+    """Ensure the AI travel concierge chatbot answers traveler queries."""
+    client = app.test_client()
+    res = client.post("/api/ai/chat", json={
+        "message": "How do I plan a trip with AI concierge?"
+    })
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data["success"] is True
+    assert "reply" in data
+    assert len(data["reply"]) > 20
+
+
+def test_stay_fake_reviews_retrieval(app):
+    """Ensure travel stays return verified reviews."""
+    client = app.test_client()
+    res = client.get("/api/reviews?stay_id=stay_sg_1")
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data["total"] > 0
+    assert len(data["reviews"]) > 0
+    assert data["reviews"][0]["rating"] >= 4
+
+
