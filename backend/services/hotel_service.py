@@ -532,6 +532,10 @@ class HotelService:
                 "italy": ["italy", "positano", "amalfi", "ravello", "rome"],
                 "france": ["france", "paris"],
                 "bali": ["bali", "indonesia", "ubud"],
+                "noida": ["noida", "delhi", "ncr"],
+                "ghaziabad": ["ghaziabad", "delhi", "ncr"],
+                "gurugram": ["gurugram", "gurgaon", "delhi", "ncr"],
+                "delhi": ["delhi", "noida", "gurugram", "ghaziabad"],
             }
 
             search_terms = [dest_query]
