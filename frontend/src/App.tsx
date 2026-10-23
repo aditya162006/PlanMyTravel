@@ -15,14 +15,12 @@ import { WalletPage } from './pages/WalletPage';
 import { BookingsPage } from './pages/BookingsPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { GuideRegistrationPage } from './pages/GuideRegistrationPage';
-import { ExpenseTrackerPage } from './pages/ExpenseTrackerPage';
-import { AIChatbot } from './components/AIChatbot';
 
 export const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#222222]">
+        <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#141413]">
           <Navbar />
           <main className="flex-1">
             <Routes>
@@ -34,14 +32,12 @@ export const App: React.FC = () => {
               <Route path="/trips" element={<MyTripsPage />} />
               <Route path="/wallet" element={<WalletPage />} />
               <Route path="/bookings" element={<BookingsPage />} />
-              <Route path="/expenses" element={<ExpenseTrackerPage />} />
               <Route path="/admin" element={<AdminDashboardPage />} />
               <Route path="/become-a-guide" element={<GuideRegistrationPage />} />
             </Routes>
           </main>
           <Footer />
           <AuthModal />
-          <AIChatbot />
         </div>
       </Router>
     </AuthProvider>

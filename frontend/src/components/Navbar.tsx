@@ -1,314 +1,359 @@
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import {
-  Search, Menu, X, ShieldAlert, LogOut, Wallet as WalletIcon,
-  Globe, Compass, Sparkles, User as UserIcon
-} from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Compass, Sparkles, Bed, MapPin, Wallet as WalletIcon, Menu, X, ShieldAlert, LogOut, Users } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const Navbar: React.FC = () => {
   const { user, admin, isAuthenticated, isAdmin, walletBalance, openAuthModal, logout } = useAuth();
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
-  // Search Bar State
-  const [searchWhere, setSearchWhere] = useState('');
-  const [searchWhen, setSearchWhen] = useState('');
-  const [searchWho, setSearchWho] = useState('2 guests');
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-
-  const isActive = (path: string) => {
-    if (path === '/' && location.pathname === '/') return true;
-    if (path !== '/' && location.pathname.startsWith(path)) return true;
-    return false;
-  };
-
+  const isActive = (path: string) => location.pathname === path;
   const isAnyLoggedIn = isAuthenticated || isAdmin;
 
-  const handleSearchSubmit = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    const dest = searchWhere.trim();
-    if (dest) {
-      navigate(`/stays?destination=${encodeURIComponent(dest)}`);
-    } else {
-      navigate('/stays');
-    }
-  };
-
-  const navCategories = [
-    { id: 'all', label: 'All', icon: '🌐', path: '/explore' },
-    { id: 'experiences', label: 'Experiences', icon: '🎈', path: '/concierge' },
-    { id: 'services', label: 'Services', icon: '🛎️', path: '/become-a-guide' },
-    { id: 'homes', label: 'Homes', icon: '🏡', path: '/stays' },
-    { id: 'expenses', label: 'Expenses', icon: '💳', path: '/expenses' },
-  ];
-
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-[#DDDDDD] transition-all">
+    <header className="sticky top-0 z-40 bg-[#FAF9F6]/90 backdrop-blur-md border-b border-charcoal-100/70 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* TOP ROW: Logo, Center Category Switcher, Right Controls */}
         <div className="flex items-center justify-between h-20">
           
-          {/* 1. Left Logo */}
-          <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
-            {/* Airbnb-style Coral Logo */}
-            <svg
-              className="w-8 h-8 text-[#FF385C] flex-shrink-0"
-              viewBox="0 0 32 32"
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M16 1c2.008 0 3.463.963 4.751 3.269l.533 1.025c1.954 3.83 4.116 8.342 6.16 12.871 1.613 3.574 2.556 6.302 2.556 8.835 0 5.43-4.22 8-8.5 8-3.082 0-5.466-1.341-7.5-3.666-2.034 2.325-4.418 3.666-7.5 3.666-4.28 0-8.5-2.57-8.5-8 0-2.533.943-5.261 2.556-8.835 2.044-4.529 4.206-9.041 6.16-12.871l.533-1.025C9.537 1.963 10.992 1 13 1h3zm0 2c-1.352 0-2.395.666-3.414 2.502l-.527 1.014c-1.936 3.794-4.084 8.277-6.115 12.775-1.503 3.33-2.344 5.753-2.344 7.709 0 4.148 3.267 6 6.5 6 2.585 0 4.67-1.258 6.452-3.479l.948-1.182.948 1.182C20.23 29.742 22.315 31 24.9 31c3.233 0 6.5-1.852 6.5-6 0-1.956-.841-4.379-2.344-7.709-2.031-4.498-4.179-8.981-6.115-12.775l-.527-1.014C21.395 3.666 20.352 3 19 3h-3zm0 15c2.485 0 4.5 2.015 4.5 4.5 0 2.213-1.42 4.045-3.375 4.418l-.375.044c-2.485 0-4.5-2.015-4.5-4.5 0-2.213 1.42-4.045 3.375-4.418l.375-.044zm0 2c-1.381 0-2.5 1.119-2.5 2.5 0 1.256.924 2.296 2.128 2.476l.172.014c1.381 0 2.5-1.119 2.5-2.5 0-1.256-.924-2.296-2.128-2.476l-.172-.014z" />
-            </svg>
-            <span className="font-bold text-xl tracking-tight text-[#FF385C] hidden sm:inline-block">
-              airbnb
-            </span>
+          {/* Brand Logo */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 rounded-full bg-forest-800 text-ivory-100 flex items-center justify-center shadow-soft transition-transform group-hover:scale-105">
+              <Compass className="w-5 h-5 text-sage-300 stroke-[1.8]" />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-serif text-xl tracking-tight font-medium text-charcoal-900 leading-none">
+                PlanMyTravel
+              </span>
+              <span className="text-[10px] uppercase tracking-widest text-charcoal-400 font-medium mt-1">
+                AI Discovery
+              </span>
+            </div>
           </Link>
 
-          {/* 2. Center: Categories Switcher with underline indicator */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-            {navCategories.map((cat) => {
-              const active = isActive(cat.path);
-              return (
-                <Link
-                  key={cat.id}
-                  to={cat.path}
-                  className={`flex items-center gap-2 pb-2 text-sm font-semibold transition-all relative ${
-                    active
-                      ? 'text-[#222222] border-b-2 border-[#222222]'
-                      : 'text-[#717171] hover:text-[#222222] border-b-2 border-transparent'
-                  }`}
-                >
-                  <span className="text-lg">{cat.icon}</span>
-                  <span>{cat.label}</span>
-                </Link>
-              );
-            })}
+          {/* Desktop Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1 lg:gap-2">
+            <Link
+              to="/explore"
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                isActive('/explore')
+                  ? 'bg-charcoal-900 text-ivory-50'
+                  : 'text-charcoal-700 hover:text-charcoal-900 hover:bg-ivory-200/60'
+              }`}
+            >
+              Explore
+            </Link>
+            <Link
+              to="/stays"
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                isActive('/stays')
+                  ? 'bg-charcoal-900 text-ivory-50'
+                  : 'text-charcoal-700 hover:text-charcoal-900 hover:bg-ivory-200/60'
+              }`}
+            >
+              Stays
+            </Link>
+            <Link
+              to="/concierge"
+              className={`px-4 py-2 rounded-full text-sm font-medium flex items-center gap-1.5 transition-colors ${
+                isActive('/concierge')
+                  ? 'bg-forest-800 text-ivory-50 shadow-soft'
+                  : 'text-forest-800 bg-sage-50/80 hover:bg-sage-100/80 border border-sage-200/50'
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-sage-500 fill-sage-400" />
+              <span>AI Concierge</span>
+            </Link>
+            <Link
+              to="/trips"
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                isActive('/trips')
+                  ? 'bg-charcoal-900 text-ivory-50'
+                  : 'text-charcoal-700 hover:text-charcoal-900 hover:bg-ivory-200/60'
+              }`}
+            >
+              My Trips
+            </Link>
           </nav>
 
-          {/* 3. Right: Become a host, Wallet, User Menu */}
-          <div className="flex items-center gap-3">
-            <Link
-              to="/become-a-guide"
-              className="hidden lg:inline-block text-xs font-semibold text-[#222222] hover:bg-[#F2F2F2] px-3.5 py-2 rounded-full transition-colors cursor-pointer"
-            >
-              Become a host
-            </Link>
-
-            {/* Wallet Balance Pill */}
-            {isAuthenticated && (
-              <Link
-                to="/wallet"
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F7F7F7] hover:bg-[#F2F2F2] border border-[#DDDDDD] text-xs font-semibold text-[#222222] transition-all hover:scale-105 active:scale-95 cursor-pointer"
-                title="Trip Wallet"
-              >
-                <WalletIcon className="w-3.5 h-3.5 text-[#FF385C]" />
-                <span>₹{(walletBalance || 0).toLocaleString('en-IN')}</span>
-              </Link>
-            )}
-
-            {/* Admin Console shortcut if staff */}
+          {/* Right Controls: Admin Pill, Wallet & Account */}
+          <div className="hidden md:flex items-center gap-3">
+            {/* Direct Admin Console Pill if Staff is logged in */}
             {isAdmin && (
               <Link
                 to="/admin"
-                className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#222222] text-white text-[11px] font-semibold hover:bg-[#FF385C] transition-colors"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-forest-800 text-ivory-50 text-xs font-semibold shadow-soft hover:bg-forest-900 transition-all"
+                title="Open Administrative Console"
               >
-                <ShieldAlert className="w-3.5 h-3.5 text-[#FF385C]" />
-                <span>Admin</span>
+                <ShieldAlert className="w-3.5 h-3.5 text-sage-300" />
+                <span>Admin Console</span>
               </Link>
             )}
 
-            {/* Combined Hamburger + User Avatar Pill */}
-            <div className="relative">
-              <button
-                onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-3 pl-3.5 pr-1.5 py-1.5 rounded-full border border-[#DDDDDD] hover:shadow-md transition-all cursor-pointer bg-white"
-                title="Account menu"
+            {isAuthenticated && (
+              <Link
+                to="/wallet"
+                className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-charcoal-100 shadow-soft-sm hover:border-sage-300 transition-all group"
+                title="Trip Wallet Balance"
               >
-                <Menu className="w-4 h-4 text-[#222222]" />
-                <div className="w-7 h-7 rounded-full bg-[#FF385C] text-white flex items-center justify-center text-xs font-bold shadow-sm">
-                  {user?.name ? user.name[0].toUpperCase() : 'A'}
+                <div className="w-6 h-6 rounded-full bg-sage-50 flex items-center justify-center text-forest-800">
+                  <WalletIcon className="w-3.5 h-3.5" />
                 </div>
-              </button>
+                <div className="flex flex-col text-left">
+                  <span className="text-[10px] text-charcoal-400 uppercase tracking-wider font-medium leading-none">Wallet</span>
+                  <span className="text-xs font-semibold text-charcoal-800">₹{walletBalance.toLocaleString('en-IN')}</span>
+                </div>
+              </Link>
+            )}
 
-              {/* User Dropdown Menu */}
-              {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-[#DDDDDD] py-2 z-50 animate-in fade-in zoom-in-95 duration-100">
-                  {isAnyLoggedIn ? (
-                    <>
-                      <div className="px-4 py-3 border-b border-[#DDDDDD]">
-                        <p className="text-xs text-[#717171]">Signed in as</p>
-                        <p className="text-sm font-bold text-[#222222] truncate">{user?.name || user?.email || admin?.email}</p>
-                      </div>
+            {/* User or Admin Dropdown */}
+            {isAnyLoggedIn ? (
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full border border-charcoal-200 hover:border-charcoal-300 hover:shadow-soft-sm transition-all"
+                >
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold ${
+                    isAdmin && !user ? 'bg-forest-800 text-ivory-100' : 'bg-charcoal-800 text-ivory-100'
+                  }`}>
+                    {isAdmin && !user ? 'A' : (user?.name?.[0]?.toUpperCase() || 'T')}
+                  </div>
+                  <span className="text-sm font-medium text-charcoal-800 max-w-[120px] truncate">
+                    {user?.name || (isAdmin ? 'Staff Admin' : 'Traveler')}
+                  </span>
+                </button>
 
-                      <div className="py-1 text-xs text-[#222222]">
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-float border border-charcoal-100 py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="px-4 py-2 border-b border-charcoal-100">
+                      <p className="text-xs text-charcoal-400 font-medium">
+                        {isAdmin && !user ? 'Staff Account' : 'Signed in as'}
+                      </p>
+                      <p className="text-sm font-semibold text-charcoal-900 truncate">
+                        {user?.email || admin?.email}
+                      </p>
+                    </div>
+
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-forest-800 bg-sage-50/50 hover:bg-sage-100 transition-colors font-medium"
+                      >
+                        <ShieldAlert className="w-4 h-4 text-forest-800" />
+                        <span>Admin Console</span>
+                      </Link>
+                    )}
+
+                    {isAuthenticated && (
+                      <>
                         <Link
                           to="/trips"
                           onClick={() => setUserMenuOpen(false)}
-                          className="block px-4 py-2.5 hover:bg-[#F2F2F2] transition-colors"
+                          className="flex items-center gap-2 px-4 py-2.5 text-sm text-charcoal-700 hover:bg-ivory-100 transition-colors"
                         >
-                          My Trips
-                        </Link>
-                        <Link
-                          to="/bookings"
-                          onClick={() => setUserMenuOpen(false)}
-                          className="block px-4 py-2.5 hover:bg-[#F2F2F2] transition-colors"
-                        >
-                          My Bookings
+                          <MapPin className="w-4 h-4 text-charcoal-400" />
+                          <span>My Saved Trips</span>
                         </Link>
                         <Link
                           to="/wallet"
                           onClick={() => setUserMenuOpen(false)}
-                          className="flex items-center justify-between px-4 py-2.5 hover:bg-[#F2F2F2] transition-colors"
+                          className="flex items-center gap-2 px-4 py-2.5 text-sm text-charcoal-700 hover:bg-ivory-100 transition-colors"
                         >
+                          <WalletIcon className="w-4 h-4 text-charcoal-400" />
                           <span>Trip Wallet</span>
-                          <span className="font-bold text-[#008A05]">₹{(walletBalance || 0).toLocaleString('en-IN')}</span>
                         </Link>
                         <Link
-                          to="/expenses"
+                          to="/bookings"
                           onClick={() => setUserMenuOpen(false)}
-                          className="block px-4 py-2.5 hover:bg-[#F2F2F2] transition-colors"
+                          className="flex items-center gap-2 px-4 py-2.5 text-sm text-charcoal-700 hover:bg-ivory-100 transition-colors"
                         >
-                          Journey Expense Tracker
+                          <Bed className="w-4 h-4 text-charcoal-400" />
+                          <span>My Bookings</span>
                         </Link>
                         <Link
                           to="/become-a-guide"
                           onClick={() => setUserMenuOpen(false)}
-                          className="block px-4 py-2.5 hover:bg-[#F2F2F2] transition-colors"
+                          className="flex items-center gap-2 px-4 py-2.5 text-sm text-charcoal-700 hover:bg-ivory-100 transition-colors"
                         >
-                          Become a Host / Guide
+                          <Users className="w-4 h-4 text-charcoal-400" />
+                          <span>Become a Local Guide</span>
                         </Link>
-                        {isAdmin && (
-                          <Link
-                            to="/admin"
-                            onClick={() => setUserMenuOpen(false)}
-                            className="block px-4 py-2.5 hover:bg-[#F2F2F2] text-[#FF385C] font-semibold transition-colors"
-                          >
-                            Admin Dashboard
-                          </Link>
-                        )}
-                      </div>
+                      </>
+                    )}
 
-                      <div className="pt-1 border-t border-[#DDDDDD]">
-                        <button
-                          onClick={() => {
-                            setUserMenuOpen(false);
-                            logout();
-                          }}
-                          className="w-full text-left px-4 py-2.5 text-xs text-[#FF385C] hover:bg-[#FFF0F2] font-semibold transition-colors cursor-pointer"
-                        >
-                          Log out
-                        </button>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="py-1 text-xs text-[#222222]">
+                    <div className="border-t border-charcoal-100 mt-1 pt-1">
                       <button
                         onClick={() => {
                           setUserMenuOpen(false);
-                          openAuthModal('login');
+                          logout();
                         }}
-                        className="w-full text-left px-4 py-2.5 hover:bg-[#F2F2F2] font-semibold transition-colors cursor-pointer"
+                        className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-terracotta-600 hover:bg-terracotta-50 transition-colors"
                       >
-                        Log in
+                        <LogOut className="w-4 h-4" />
+                        <span>Sign Out</span>
                       </button>
-                      <button
-                        onClick={() => {
-                          setUserMenuOpen(false);
-                          openAuthModal('register');
-                        }}
-                        className="w-full text-left px-4 py-2.5 hover:bg-[#F2F2F2] transition-colors cursor-pointer"
-                      >
-                        Sign up
-                      </button>
-                      <div className="border-t border-[#DDDDDD] my-1"></div>
-                      <Link
-                        to="/become-a-guide"
-                        onClick={() => setUserMenuOpen(false)}
-                        className="block px-4 py-2.5 hover:bg-[#F2F2F2] transition-colors"
-                      >
-                        Become a host / Guide
-                      </Link>
-                      <Link
-                        to="/concierge"
-                        onClick={() => setUserMenuOpen(false)}
-                        className="block px-4 py-2.5 hover:bg-[#F2F2F2] transition-colors"
-                      >
-                        AI Concierge
-                      </Link>
                     </div>
-                  )}
-                </div>
-              )}
-            </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => openAuthModal('login')}
+                  className="px-4 py-2 rounded-full text-sm font-medium text-charcoal-800 hover:bg-ivory-200 transition-colors"
+                >
+                  Sign in
+                </button>
+                <button
+                  onClick={() => openAuthModal('register')}
+                  className="px-4 py-2 rounded-full text-sm font-medium bg-forest-800 text-ivory-50 hover:bg-forest-900 shadow-soft-sm transition-all"
+                >
+                  Get started
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center gap-2">
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="px-2.5 py-1 rounded-full bg-forest-800 text-white text-[11px] font-semibold"
+              >
+                Admin
+              </Link>
+            )}
+            {isAuthenticated && (
+              <Link
+                to="/wallet"
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-charcoal-100 text-xs font-semibold text-charcoal-800"
+              >
+                <WalletIcon className="w-3.5 h-3.5 text-sage-600" />
+                <span>₹{walletBalance.toLocaleString('en-IN')}</span>
+              </Link>
+            )}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-full text-charcoal-700 hover:bg-ivory-200 transition-colors"
+              aria-label="Toggle Navigation Menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-[#FAF9F6] border-b border-charcoal-100 px-6 py-6 space-y-4 animate-in slide-in-from-top duration-200">
+          <nav className="flex flex-col space-y-2">
+            {isAdmin && (
+              <Link
+                to="/admin"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-3 rounded-xl text-base font-semibold bg-forest-800 text-white flex items-center gap-2"
+              >
+                <ShieldAlert className="w-4 h-4 text-sage-300" />
+                <span>Admin Console</span>
+              </Link>
+            )}
+            <Link
+              to="/explore"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`px-4 py-3 rounded-xl text-base font-medium ${
+                isActive('/explore') ? 'bg-charcoal-900 text-white' : 'text-charcoal-800 hover:bg-ivory-200'
+              }`}
+            >
+              Explore Destinations
+            </Link>
+            <Link
+              to="/stays"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`px-4 py-3 rounded-xl text-base font-medium ${
+                isActive('/stays') ? 'bg-charcoal-900 text-white' : 'text-charcoal-800 hover:bg-ivory-200'
+              }`}
+            >
+              Boutique Stays
+            </Link>
+            <Link
+              to="/concierge"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`px-4 py-3 rounded-xl text-base font-medium flex items-center gap-2 ${
+                isActive('/concierge') ? 'bg-forest-800 text-white' : 'text-forest-800 bg-sage-50'
+              }`}
+            >
+              <Sparkles className="w-4 h-4 text-sage-500 fill-sage-400" />
+              <span>AI Trip Concierge</span>
+            </Link>
+            <Link
+              to="/trips"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`px-4 py-3 rounded-xl text-base font-medium ${
+                isActive('/trips') ? 'bg-charcoal-900 text-white' : 'text-charcoal-800 hover:bg-ivory-200'
+              }`}
+            >
+              My Saved Trips
+            </Link>
+            <Link
+              to="/wallet"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`px-4 py-3 rounded-xl text-base font-medium ${
+                isActive('/wallet') ? 'bg-charcoal-900 text-white' : 'text-charcoal-800 hover:bg-ivory-200'
+              }`}
+            >
+              Trip Wallet
+            </Link>
+            <Link
+              to="/bookings"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`px-4 py-3 rounded-xl text-base font-medium ${
+                isActive('/bookings') ? 'bg-charcoal-900 text-white' : 'text-charcoal-800 hover:bg-ivory-200'
+              }`}
+            >
+              My Bookings
+            </Link>
+          </nav>
+
+          <div className="pt-4 border-t border-charcoal-100">
+            {isAnyLoggedIn ? (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  logout();
+                }}
+                className="w-full py-3 rounded-xl text-center text-sm font-medium text-terracotta-600 bg-terracotta-50"
+              >
+                Sign Out ({user?.email || admin?.email})
+              </button>
+            ) : (
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openAuthModal('login');
+                  }}
+                  className="py-3 rounded-xl text-center text-sm font-medium bg-white border border-charcoal-200 text-charcoal-900"
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openAuthModal('register');
+                  }}
+                  className="py-3 rounded-xl text-center text-sm font-medium bg-forest-800 text-white"
+                >
+                  Sign Up
+                </button>
+              </div>
+            )}
           </div>
         </div>
-
-        {/* FLOATING 3-PART SEARCH PILL: Where | When | Who [Search Button] */}
-        <div className="pb-5 pt-1 flex justify-center">
-          <form
-            onSubmit={handleSearchSubmit}
-            className="w-full max-w-3xl bg-white border border-[#DDDDDD] rounded-full shadow-md hover:shadow-lg transition-all flex items-center p-2 divide-x divide-[#DDDDDD]"
-          >
-            {/* Where */}
-            <div className="flex-1 px-4 py-1 text-left min-w-0">
-              <label className="block text-[10px] font-bold text-[#222222] uppercase tracking-wider">
-                Where
-              </label>
-              <input
-                type="text"
-                value={searchWhere}
-                onChange={(e) => setSearchWhere(e.target.value)}
-                placeholder="Search destinations (e.g. Noida, Kyoto)"
-                className="w-full bg-transparent text-xs text-[#222222] placeholder-[#717171] outline-none font-medium truncate"
-              />
-            </div>
-
-            {/* When */}
-            <div className="flex-1 px-4 py-1 text-left hidden sm:block min-w-0">
-              <label className="block text-[10px] font-bold text-[#222222] uppercase tracking-wider">
-                When
-              </label>
-              <input
-                type="text"
-                value={searchWhen}
-                onChange={(e) => setSearchWhen(e.target.value)}
-                placeholder="Add dates"
-                className="w-full bg-transparent text-xs text-[#222222] placeholder-[#717171] outline-none font-medium"
-              />
-            </div>
-
-            {/* Who */}
-            <div className="flex-1 px-4 py-1 text-left hidden sm:block min-w-0">
-              <label className="block text-[10px] font-bold text-[#222222] uppercase tracking-wider">
-                Who
-              </label>
-              <input
-                type="text"
-                value={searchWho}
-                onChange={(e) => setSearchWho(e.target.value)}
-                placeholder="Add guests"
-                className="w-full bg-transparent text-xs text-[#222222] placeholder-[#717171] outline-none font-medium"
-              />
-            </div>
-
-            {/* Circular Coral Search Button */}
-            <div className="pl-2 pr-1">
-              <button
-                type="submit"
-                className="w-11 h-11 rounded-full bg-[#FF385C] hover:bg-[#E00B41] text-white flex items-center justify-center shadow-coral transition-all hover:scale-105 active:scale-95 cursor-pointer"
-                title="Search stays"
-              >
-                <Search className="w-4 h-4 stroke-[2.5]" />
-              </button>
-            </div>
-          </form>
-        </div>
-
-      </div>
+      )}
     </header>
   );
 };
