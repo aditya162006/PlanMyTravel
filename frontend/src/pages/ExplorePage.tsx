@@ -210,6 +210,112 @@ export const ExplorePage: React.FC = () => {
 
       </div>
 
+      {/* Curated Mock Itinerary Blueprints */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-widest text-forest-800 mb-0.5 block">
+              Curated Itinerary Blueprints
+            </span>
+            <h2 className="font-serif text-2xl font-medium text-charcoal-900">
+              Featured Mock Itineraries
+            </h2>
+          </div>
+          <Link
+            to="/concierge"
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-forest-800 hover:text-forest-900"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Customize Any Journey in AI Concierge →</span>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {mockItineraries.map((itin) => (
+            <div
+              key={itin.id}
+              className="group bg-white rounded-3xl border border-charcoal-100 shadow-soft-sm hover:shadow-soft-lg hover:border-sage-200 transition-all flex flex-col justify-between overflow-hidden"
+            >
+              <div>
+                <div className="relative aspect-[16/10] overflow-hidden bg-ivory-200">
+                  <img
+                    src={itin.image}
+                    alt={itin.title}
+                    className="w-full h-full object-cover transform transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute top-3 left-3">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-white/95 text-charcoal-900 shadow-soft-sm">
+                      {itin.category}
+                    </span>
+                  </div>
+                  <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/95 text-[11px] font-bold text-charcoal-900 shadow-soft-sm">
+                    <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                    <span>{itin.rating}</span>
+                    <span className="text-charcoal-400 font-normal">({itin.reviewsCount})</span>
+                  </div>
+                </div>
+
+                <div className="p-5 space-y-3">
+                  <div className="flex items-center gap-1.5 text-xs text-charcoal-500 font-medium">
+                    <Clock className="w-3.5 h-3.5 text-charcoal-400" />
+                    <span>{itin.duration}</span>
+                    <span className="text-charcoal-300">•</span>
+                    <span className="text-forest-800 font-semibold">{itin.destination.split(',')[0]}</span>
+                  </div>
+
+                  <h3 className="font-serif text-lg font-medium text-charcoal-900 group-hover:text-forest-800 transition-colors">
+                    {itin.title}
+                  </h3>
+
+                  <div className="space-y-1.5 text-xs text-charcoal-600 pt-1 border-t border-charcoal-100/70">
+                    <div className="flex items-center gap-2">
+                      <Bed className="w-3.5 h-3.5 text-sage-600 flex-shrink-0" />
+                      <span className="truncate">{itin.stayName}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Users className="w-3.5 h-3.5 text-sage-600 flex-shrink-0" />
+                      <span className="truncate">{itin.guideName}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1 pt-1">
+                    {itin.highlights.map((h, i) => (
+                      <span key={i} className="px-2 py-0.5 rounded-full bg-ivory-100 text-[10px] font-medium text-charcoal-600">
+                        {h}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-5 pt-0 border-t border-charcoal-100/70 pt-4 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] uppercase tracking-wider text-charcoal-400 block">Indicative Budget</span>
+                  <span className="text-sm font-bold text-charcoal-900">₹{itin.budget.toLocaleString('en-IN')}</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => navigate(`/stays?destination=${encodeURIComponent(itin.destination)}`)}
+                    className="px-3 py-1.5 rounded-xl border border-charcoal-200 text-charcoal-700 hover:bg-ivory-100 text-xs font-medium transition-all"
+                    title="View Stays in Region"
+                  >
+                    Stays
+                  </button>
+                  <button
+                    onClick={() => navigate(`/concierge?destination=${encodeURIComponent(itin.destination)}&days=4&budget=${itin.budget}`)}
+                    className="px-3.5 py-1.5 rounded-xl bg-forest-800 hover:bg-forest-900 text-white text-xs font-semibold shadow-soft-sm transition-all flex items-center gap-1"
+                  >
+                    <Sparkles className="w-3 h-3 text-sage-300" />
+                    <span>Customize</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Destinations Grid */}
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
