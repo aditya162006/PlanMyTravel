@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Compass, Sparkles, Bed, MapPin, Wallet as WalletIcon, Menu, X, ShieldAlert, LogOut, Users, PieChart } from 'lucide-react';
+import { Compass, Sparkles, Bed, MapPin, Wallet as WalletIcon, Menu, X, ShieldAlert, LogOut, Users, PieChart, Car } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const Navbar: React.FC = () => {
@@ -53,6 +53,16 @@ export const Navbar: React.FC = () => {
               }`}
             >
               Stays
+            </Link>
+            <Link
+              to="/rentals"
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                isActive('/rentals')
+                  ? 'bg-charcoal-900 text-ivory-50'
+                  : 'text-charcoal-700 hover:text-charcoal-900 hover:bg-ivory-200/60'
+              }`}
+            >
+              Rentals
             </Link>
             <Link
               to="/concierge"
@@ -191,6 +201,14 @@ export const Navbar: React.FC = () => {
                           <span>My Bookings</span>
                         </Link>
                         <Link
+                          to="/rentals"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2 px-4 py-2.5 text-sm text-charcoal-700 hover:bg-ivory-100 transition-colors"
+                        >
+                          <Car className="w-4 h-4 text-charcoal-400" />
+                          <span>Vehicle Rentals</span>
+                        </Link>
+                        <Link
                           to="/become-a-guide"
                           onClick={() => setUserMenuOpen(false)}
                           className="flex items-center gap-2 px-4 py-2.5 text-sm text-charcoal-700 hover:bg-ivory-100 transition-colors"
@@ -296,6 +314,16 @@ export const Navbar: React.FC = () => {
               }`}
             >
               Boutique Stays
+            </Link>
+            <Link
+              to="/rentals"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`px-4 py-3 rounded-xl text-base font-medium flex items-center gap-2 ${
+                isActive('/rentals') ? 'bg-charcoal-900 text-white' : 'text-charcoal-800 hover:bg-ivory-200'
+              }`}
+            >
+              <Car className="w-4 h-4" />
+              <span>Cab & Bike Rentals</span>
             </Link>
             <Link
               to="/concierge"

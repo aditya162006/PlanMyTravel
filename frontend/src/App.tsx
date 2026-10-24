@@ -16,6 +16,7 @@ import { BookingsPage } from './pages/BookingsPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { GuideRegistrationPage } from './pages/GuideRegistrationPage';
 import { ExpenseTrackerPage } from './pages/ExpenseTrackerPage';
+import { VehicleRentalsPage } from './pages/VehicleRentalsPage';
 import { PlanlyChatbot } from './components/PlanlyChatbot';
 
 export const App: React.FC = () => {
@@ -30,6 +31,7 @@ export const App: React.FC = () => {
               <Route path="/explore" element={<ExplorePage />} />
               <Route path="/destinations/:slug" element={<DestinationDetailPage />} />
               <Route path="/stays" element={<StaysPage />} />
+              <Route path="/rentals" element={<VehicleRentalsPage />} />
               <Route path="/concierge" element={<ConciergePlannerPage />} />
               <Route path="/trips" element={<MyTripsPage />} />
               <Route path="/expenses" element={<ExpenseTrackerPage />} />

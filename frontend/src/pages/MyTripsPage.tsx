@@ -211,6 +211,14 @@ export const MyTripsPage: React.FC = () => {
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
+                    <button
+                      onClick={() => handleTriggerSOS(trip)}
+                      className="px-2.5 py-1.5 rounded-xl text-rose-600 hover:text-rose-700 hover:bg-rose-50 transition-colors flex items-center gap-1 text-xs font-semibold"
+                      title="Distress / Emergency SOS for this trip destination"
+                    >
+                      <ShieldAlert className="w-4 h-4 text-rose-600" />
+                      <span>SOS</span>
+                    </button>
                   </div>
 
                   <button
@@ -228,6 +236,13 @@ export const MyTripsPage: React.FC = () => {
         </div>
       )}
 
+      {/* Emergency SOS Distress Modal */}
+      <SOSEmergencyModal
+        isOpen={isSOSOpen}
+        onClose={() => setIsSOSOpen(false)}
+        trips={trips}
+        defaultTrip={selectedSOSTrip}
+      />
     </div>
   );
 };
