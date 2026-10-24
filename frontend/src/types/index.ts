@@ -336,4 +336,72 @@ export interface ExpenseSummary {
   wallet_balance: number;
 }
 
+export interface RentalVehicle {
+  id: string;
+  name: string;
+  category: 'cab' | 'motorbike' | 'scooter';
+  location: string;
+  city: string;
+  country: string;
+  image_url: string;
+  daily_rate: number;
+  hourly_rate: number;
+  security_deposit: number;
+  currency: string;
+  transmission: string;
+  fuel_type: string;
+  engine_capacity: string;
+  seats: number;
+  luggage_capacity: string;
+  mileage: string;
+  has_chauffeur: boolean;
+  inclusions: string[];
+  requirements: {
+    min_age: number;
+    license: string;
+    deposit_type: string;
+    fuel_policy: string;
+  };
+  pickup_locations: string[];
+  rating: number;
+  review_count: number;
+  supplier: string;
+}
+
+export interface SOSAuthority {
+  destination: string;
+  country: string;
+  police: string;
+  ambulance: string;
+  fire: string;
+  tourist_police: string;
+  embassy_hotline: string;
+  authority_name: string;
+  dispatch_center: string;
+  response_time_sla: string;
+  emergency_language: string;
+  safety_instructions: string[];
+}
+
+export interface SOSIncident {
+  incident_id: string;
+  trip_id?: string;
+  user_id?: number;
+  user_name: string;
+  user_phone?: string;
+  destination: string;
+  emergency_type: string;
+  user_location: string;
+  latitude?: number;
+  longitude?: number;
+  user_notes?: string;
+  status: 'ALERT_BROADCASTED' | 'DISPATCHED' | 'RESOLVED_SAFE';
+  authority: SOSAuthority;
+  dispatched_at: string;
+  estimated_arrival: string;
+  resolution_notes?: string;
+  resolved_at?: string;
+}
+
+
 

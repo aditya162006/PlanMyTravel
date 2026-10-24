@@ -243,5 +243,27 @@ export const api = {
     apiRequest(`/api/admin/guides/${id}/approve`, { method: 'POST' }),
   adminRejectGuide: (id: number) =>
     apiRequest(`/api/admin/guides/${id}/reject`, { method: 'POST' }),
+
+  // Vehicle Rentals (Cab, Bike, Scooter)
+  getRentals: (params: { location?: string; category?: string; sort?: string; max_price?: number } = {}) => {
+    const query = new URLSearchParams();
+    if (params.location) query.append('location', params.location);
+    if (params.category && params.category !== 'all') query.append('category', params.category);
+    if (params.sort) query.append('sort', params.sort);
+    if (params.max_price) query.append('max_price', String(params.max_price));
+    return apiRequest<{ total: number; location: string; category: string; vehicles: any[] }>(`/api/rentals?${query.toString()}`);
+  },
+  getRentalLocations: () =>
+    apiRequest<{ locations: Array<{ name: string; country: string; tag: string }> }>('/api/rentals/locations'),
+  bookRental: (payload: { vehicle_id: string; days: number; pickup_date?: string; return_date?: string; pickup_point?: string; driver_name?: string; driver_phone?: string; pay_with_wallet?: boolean }) =>
+    apiRequest<{ success: boolean; message: string; confirmation: any; wallet_balance?: number }>('/api/rentals/book', { method: 'POST', body: JSON.stringify(payload) }),
+
+  // SOS Emergency Dispatch
+  triggerSOS: (payload: { trip_id?: string; destination?: string; emergency_type?: string; location_text?: string; latitude?: number; longitude?: number; notes?: string; user_name?: string; user_phone?: string }) =>
+    apiRequest<{ success: boolean; message: string; incident: any }>('/api/emergency/sos', { method: 'POST', body: JSON.stringify(payload) }),
+  getSOSContacts: (destination: string) =>
+    apiRequest<{ authority: any }>(`/api/emergency/contacts?destination=${encodeURIComponent(destination)}`),
+  cancelSOS: (incidentId: string, reason?: string) =>
+    apiRequest<{ success: boolean; message: string; incident: any }>(`/api/emergency/sos/${incidentId}/cancel`, { method: 'POST', body: JSON.stringify({ reason }) }),
 };
 
