@@ -214,7 +214,7 @@ def get_authority_for_destination(dest_name: str) -> Dict[str, Any]:
 @sos_bp.route("/contacts", methods=["GET"])
 def get_contacts():
     """Retrieve emergency contact numbers for a specific destination."""
-    dest = request.args.get("destination", "").strip()
+    dest = (request.args.get("destination") or request.args.get("location") or "").strip()
     auth = get_authority_for_destination(dest)
     return jsonify({"authority": auth})
 
