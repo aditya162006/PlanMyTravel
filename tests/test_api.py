@@ -392,3 +392,64 @@ def test_stay_fake_reviews_retrieval(app):
     assert data["reviews"][0]["rating"] >= 4
 
 
+def test_vehicle_rentals_catalog_and_booking(client):
+    """Ensure vehicle rental rates, specs and booking endpoints work."""
+    # 1. Search vehicles by location
+    res = client.get("/api/rentals?location=Bali&category=all")
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data["total"] >= 3
+    scooter = next(v for v in data["vehicles"] if v["category"] == "scooter")
+    assert scooter["daily_rate"] > 0
+    assert "inclusions" in scooter
+    assert "requirements" in scooter
+
+    # 2. Book a vehicle (reservation)
+    res_book = client.post("/api/rentals/book", json={
+        "vehicle_id": scooter["id"],
+        "days": 3,
+        "pickup_point": "Airport Terminal",
+        "driver_name": "Test Driver",
+        "pay_with_wallet": False,
+    })
+    assert res_book.status_code == 201
+    book_data = res_book.get_json()
+    assert book_data["success"] is True
+    assert "RNT-" in book_data["confirmation"]["booking_reference"]
+    assert book_data["confirmation"]["total_amount"] == round(scooter["daily_rate"] * 3, 2)
+
+
+def test_sos_emergency_alert_dispatch(client):
+    """Ensure SOS emergency distress dispatch alerts local authorities."""
+    # 1. Trigger SOS Alert for Singapore
+    res = client.post("/api/emergency/sos", json={
+        "destination": "Singapore",
+        "emergency_type": "Medical & Ambulance",
+        "location_text": "Marina Bay Sands SkyPark",
+        "notes": "Severe altitude dizziness, need first responders"
+    })
+    assert res.status_code == 201
+    data = res.get_json()
+    assert data["success"] is True
+    inc = data["incident"]
+    assert "SOS-" in inc["incident_id"]
+    assert inc["status"] == "ALERT_BROADCASTED"
+    assert "Singapore Police Force" in inc["authority"]["authority_name"]
+    assert inc["authority"]["police"] == "999"
+
+    # 2. Check contacts endpoint
+    res_c = client.get("/api/emergency/contacts?destination=Kyoto")
+    assert res_c.status_code == 200
+    c_data = res_c.get_json()
+    assert c_data["authority"]["police"] == "110"
+
+    # 3. Cancel / Stand down alert
+    res_cancel = client.post(f"/api/emergency/sos/{inc['incident_id']}/cancel", json={
+        "reason": "Traveler assisted by hotel nurse, situation resolved"
+    })
+    assert res_cancel.status_code == 200
+    cancel_data = res_cancel.get_json()
+    assert cancel_data["incident"]["status"] == "RESOLVED_SAFE"
+
+
+
