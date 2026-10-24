@@ -207,7 +207,7 @@ export const VehicleRentalsPage: React.FC = () => {
 
       {/* Filter and Category Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-3xl border border-charcoal-100 shadow-soft-sm">
-        
+
         {/* Category Tabs */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
           {[
@@ -414,7 +414,7 @@ export const VehicleRentalsPage: React.FC = () => {
       {selectedVehicle && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-charcoal-900/60 backdrop-blur-sm animate-in fade-in duration-150">
           <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-float border border-charcoal-100 p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto">
-            
+
             <button
               onClick={() => setSelectedVehicle(null)}
               className="absolute top-6 right-6 p-2 rounded-full text-charcoal-400 hover:text-charcoal-800 hover:bg-ivory-100 transition-colors"
@@ -664,3 +664,4 @@ export const VehicleRentalsPage: React.FC = () => {
     </div>
   );
 };
+

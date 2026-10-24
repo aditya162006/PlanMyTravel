@@ -30,10 +30,10 @@ export const SOSEmergencyModal: React.FC<Props> = ({
   const [notes, setNotes] = useState('');
   const [userName, setUserName] = useState('');
   const [userPhone, setUserPhone] = useState('');
-  
+
   const [authority, setAuthority] = useState<SOSAuthority | null>(null);
   const [loadingAuthority, setLoadingAuthority] = useState(false);
-  
+
   const [sending, setSending] = useState(false);
   const [activeIncident, setActiveIncident] = useState<SOSIncident | null>(null);
   const [cancelling, setCancelling] = useState(false);
@@ -134,7 +134,7 @@ export const SOSEmergencyModal: React.FC<Props> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-charcoal-900/75 backdrop-blur-md animate-in fade-in duration-150">
       <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-float border-2 border-rose-600/30 overflow-hidden flex flex-col max-h-[92vh]">
-        
+
         {/* Emergency Beacon Header */}
         <div className="px-6 py-4 bg-gradient-to-r from-rose-700 via-rose-600 to-rose-700 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -441,3 +441,4 @@ export const SOSEmergencyModal: React.FC<Props> = ({
     </div>
   );
 };
+
