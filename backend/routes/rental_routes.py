@@ -2,8 +2,8 @@ import logging
 import uuid
 from datetime import datetime, timezone
 from typing import Dict, Any, List
-from flask import Blueprint, request, jsonify, g
-from backend.utils.auth_helpers import optional_login, login_required
+from flask import Blueprint, request, jsonify, session, g
+from backend.models.user import User
 from backend.services.wallet_service import WalletService
 from backend.database import db
 
@@ -767,16 +767,18 @@ def get_vehicle_details(vehicle_id: str):
 
 
 @rental_bp.route("/book", methods=["POST"])
-@optional_login
 def book_vehicle():
     """Book a rental vehicle with optional direct settlement from Trip Wallet."""
+    user_id = session.get("user_id")
+    current_user = db.session.get(User, user_id) if user_id else None
+
     data = request.get_json() or {}
     vehicle_id = data.get("vehicle_id", "").strip()
     days = int(data.get("days", 1))
     pickup_date = data.get("pickup_date", "").strip() or datetime.now(timezone.utc).strftime("%Y-%m-%d")
     return_date = data.get("return_date", "").strip()
     pickup_point = data.get("pickup_point", "Airport Terminal").strip()
-    driver_name = data.get("driver_name", "").strip() or (g.current_user.name if g.current_user else "Traveler")
+    driver_name = data.get("driver_name", "").strip() or (current_user.name if current_user else "Traveler")
     driver_phone = data.get("driver_phone", "").strip()
     pay_with_wallet = bool(data.get("pay_with_wallet", False))
 
@@ -794,19 +796,19 @@ def book_vehicle():
     new_wallet_balance = None
 
     if pay_with_wallet:
-        if not g.current_user:
+        if not current_user:
             return jsonify({"error": "Please log in to settle rental bookings via your Trip Wallet"}), 401
 
         try:
-            idempotency_key = f"rnt_pay_{g.current_user.id}_{booking_reference}"
+            idempotency_key = f"rnt_pay_{current_user.id}_{booking_reference}"
             WalletService.debit(
-                user_id=g.current_user.id,
+                user_id=current_user.id,
                 amount_rupees=total_amount,
                 idempotency_key=idempotency_key,
                 description=f"Vehicle Rental: {vehicle['name']} ({days} days in {vehicle['location']})",
             )
             paid_status = True
-            wallet = WalletService.get_or_create_wallet(g.current_user.id)
+            wallet = WalletService.get_or_create_wallet(current_user.id)
             new_wallet_balance = round(wallet.balance, 2)
         except ValueError as err:
             return jsonify({"error": str(err), "wallet_insufficient": True}), 400

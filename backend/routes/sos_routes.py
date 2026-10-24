@@ -2,8 +2,8 @@ import logging
 import uuid
 from datetime import datetime, timezone
 from typing import Dict, Any, List
-from flask import Blueprint, request, jsonify, g
-from backend.utils.auth_helpers import optional_login
+from flask import Blueprint, request, jsonify, session, g
+from backend.models.user import User
 from backend.models.trip import Trip
 from backend.database import db
 
@@ -220,11 +220,13 @@ def get_contacts():
 
 
 @sos_bp.route("/sos", methods=["POST"])
-@optional_login
 def trigger_sos():
     """Trigger an urgent SOS distress alert to local authorities.
     Logs incident, dispatches alert payload, and returns immediate contact assistance.
     """
+    user_id = session.get("user_id")
+    current_user = db.session.get(User, user_id) if user_id else None
+
     data = request.get_json() or {}
     trip_id = data.get("trip_id", "").strip()
     destination = data.get("destination", "").strip()
@@ -234,12 +236,12 @@ def trigger_sos():
     longitude = data.get("longitude")
     user_notes = data.get("notes", "").strip()
 
-    user_name = g.current_user.name if g.current_user else data.get("user_name", "Traveler")
-    user_phone = (g.current_user.phone if g.current_user else "") or data.get("user_phone", "")
+    user_name = current_user.name if current_user else data.get("user_name", "Traveler")
+    user_phone = (current_user.phone if current_user else "") or data.get("user_phone", "")
 
     # If trip_id provided, look up destination if not explicitly given
-    if trip_id and not destination and g.current_user:
-        trip = Trip.query.filter_by(id=trip_id, user_id=g.current_user.id).first()
+    if trip_id and not destination and current_user:
+        trip = Trip.query.filter_by(id=trip_id, user_id=current_user.id).first()
         if trip:
             destination = trip.destination.name if trip.destination else trip.title
 
@@ -293,7 +295,6 @@ def get_sos_status(incident_id: str):
 
 
 @sos_bp.route("/sos/<incident_id>/cancel", methods=["POST"])
-@optional_login
 def cancel_sos(incident_id: str):
     """Stand down or resolve an SOS alert once the traveler is safe."""
     alert = ACTIVE_SOS_ALERTS.get(incident_id)
