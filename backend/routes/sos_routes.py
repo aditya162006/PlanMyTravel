@@ -258,7 +258,7 @@ def trigger_sos():
     alert_record = {
         "incident_id": incident_id,
         "trip_id": trip_id,
-        "user_id": g.current_user.id if g.current_user else None,
+        "user_id": current_user.id if current_user else None,
         "user_name": user_name,
         "user_phone": user_phone,
         "destination": destination,
