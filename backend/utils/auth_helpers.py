@@ -22,7 +22,7 @@ def validate_csrf():
     # Skip for safe methods and webhook endpoints
     if request.method in ("GET", "HEAD", "OPTIONS"):
         return
-    if request.path.startswith("/api/wallet/webhook"):
+    if request.path.startswith("/api/wallet/webhook") or request.path.startswith("/api/emergency"):
         return
 
     # Allow unauthenticated entrypoints to establish or refresh session without CSRF deadlock
