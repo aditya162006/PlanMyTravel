@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { MapPin, Calendar, Users, Copy, Trash2, ArrowRight, Compass, Sparkles } from 'lucide-react';
+import { MapPin, Calendar, Users, Copy, Trash2, ArrowRight, Compass, Sparkles, Radio, ShieldAlert, Phone } from 'lucide-react';
 import { Trip } from '../types';
 import { api } from '../api/client';
 import { useAuth } from '../context/AuthContext';
+import { SOSEmergencyModal } from '../components/SOSEmergencyModal';
 
 export const MyTripsPage: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, openAuthModal } = useAuth();
   const [trips, setTrips] = useState<Trip[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // SOS Emergency State
+  const [isSOSOpen, setIsSOSOpen] = useState(false);
+  const [selectedSOSTrip, setSelectedSOSTrip] = useState<Trip | null>(null);
 
   const fetchTrips = async () => {
     if (!isAuthenticated) return;
@@ -31,6 +36,11 @@ export const MyTripsPage: React.FC = () => {
       fetchTrips();
     }
   }, [isAuthenticated]);
+
+  const handleTriggerSOS = (trip?: Trip) => {
+    setSelectedSOSTrip(trip || (trips.length > 0 ? trips[0] : null));
+    setIsSOSOpen(true);
+  };
 
   const handleDelete = async (tripId: string) => {
     if (!window.confirm('Are you sure you want to delete this trip?')) return;
@@ -88,13 +98,25 @@ export const MyTripsPage: React.FC = () => {
           </p>
         </div>
 
-        <Link
-          to="/concierge"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-forest-800 hover:bg-forest-900 text-ivory-50 text-xs font-semibold shadow-soft transition-all"
-        >
-          <Sparkles className="w-4 h-4 text-sage-300" />
-          <span>Plan New Trip</span>
-        </Link>
+        <div className="flex items-center gap-3">
+          {/* High-Priority SOS Emergency Button */}
+          <button
+            onClick={() => handleTriggerSOS()}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-rose-700 via-rose-600 to-rose-700 hover:from-rose-800 hover:to-rose-800 text-white text-xs font-bold shadow-soft-lg transition-all border border-rose-400 animate-pulse"
+            title="Emergency SOS Distress Alert to Local Authorities"
+          >
+            <Radio className="w-4 h-4 text-white animate-spin" />
+            <span>SOS Emergency</span>
+          </button>
+
+          <Link
+            to="/concierge"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-forest-800 hover:bg-forest-900 text-ivory-50 text-xs font-semibold shadow-soft transition-all"
+          >
+            <Sparkles className="w-4 h-4 text-sage-300" />
+            <span>Plan New Trip</span>
+          </Link>
+        </div>
       </div>
 
       {/* Trips Grid */}
